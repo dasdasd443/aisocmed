@@ -1,45 +1,63 @@
 <template>
-<v-container>
-    <v-expansion-panels>
-        <v-expansion-panel v-for="(post, idx) in posts">
-            <v-expansion-panel-title>
-                <v-row>
-                    <v-col sm="9">{{ post.title }}</v-col>
-                    <v-col sm="3" class="d-flex justify-end">
-                        <small>posted by: {{handleName}}</small>
-                    </v-col>
-                </v-row>
-            </v-expansion-panel-title>
-            <v-expansion-panel-text>
-                <div class="mb-5">
-                    <v-img v-if="post.imgBool" width="300" :src="post.img"></v-img>
-                    {{ post.text }}
-                </div>
-                <v-btn size="small" @click="viewComment(idx)">{{ !post.viewComment ? "Show Comments" : "Hide Comments" }}</v-btn>
-                <v-card class="mt-5" :key="post.id" v-if="post.viewComment" :height="post.comments.length > 5 ? 300 : ''">
-                    <v-virtual-scroll v-if="post.comments.length > 0"  :items="post.comments">
-                        <template v-slot:default="item">
-                            <v-card-text>
-                                <v-row>
-                                    <v-col sm="10">{{ item.item.comment }}</v-col>
-                                    <v-col sm="2" class="d-flex justify-end">
-                                        <div>
-                                            <small>3-10-2023</small>
-                                            <v-divider></v-divider>
-                                            <p>{{ item.item.user.handle }}</p>
-                                        </div>
-                                    </v-col>
-                                </v-row>
-                            </v-card-text>
-                            <v-divider></v-divider>
-                        </template>
-                    </v-virtual-scroll>
-                    <v-card-text v-else>No comments</v-card-text>
-                </v-card>
-            </v-expansion-panel-text>
-            
-        </v-expansion-panel>
-    </v-expansion-panels>
+<v-container fluid>
+    <v-row>
+        <v-col sm="10">
+            <v-expansion-panels>
+                <v-expansion-panel v-for="(post, idx) in posts">
+                    <v-expansion-panel-title>
+                        <v-row>
+                            <v-col sm="9">{{ post.title }}</v-col>
+                            <v-col sm="3" class="d-flex justify-end">
+                                <small>posted by: {{handleName}}</small>
+                            </v-col>
+                        </v-row>
+                    </v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                        <div class="mb-5">
+                            <v-img v-if="post.imgBool" width="300" :src="post.img"></v-img>
+                            {{ post.text }}
+                        </div>
+                        <div class="d-flex justify-space-between">
+                            <v-btn size="small" @click="viewComment(idx)">{{ !post.viewComment ? "Show "+post.comments.length+" comments" : "Hide "+post.comments.length+" comments" }}</v-btn>
+                            <v-btn size="small">View post</v-btn>
+                        </div>
+                        <v-expand-transition>
+                            <v-sheet v-show="post.viewComment" border variant="tonal" class="mt-5" :key="post.id" :height="post.comments.length > 5 ? 300 : ''">
+                                <v-virtual-scroll v-if="post.comments.length > 0" :height="post.comments.length > 5 ? 300 : ''" :items="post.comments">
+                                    <template v-slot:default="item">
+                                        <v-card-text>
+                                            <v-row>
+                                                <v-col sm="10">{{ item.item.comment }}</v-col>
+                                                <v-col sm="2" class="d-flex justify-end">
+                                                    <div>
+                                                        <small>3-10-2023</small>
+                                                        <v-divider></v-divider>
+                                                        <p>{{ item.item.user.handle }}</p>
+                                                    </div>
+                                                </v-col>
+                                            </v-row>
+                                        </v-card-text>
+                                        <v-divider v-if="post.comments.length > 1"></v-divider>
+                                    </template>
+                                </v-virtual-scroll>
+                                <v-card-text v-else>No comments</v-card-text>
+                            </v-sheet>
+                        </v-expand-transition>
+                        <div v-if="post.viewComment" >
+                          <v-btn size="small" class="mt-5">
+                            Reply
+                          </v-btn>
+                        </div>
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+            </v-expansion-panels>
+        </v-col>
+        <v-col sm="2">
+            <v-card>
+                <v-card-title>AISocMed</v-card-title>
+            </v-card>
+        </v-col>
+    </v-row>
 </v-container>
 </template>
 
@@ -69,15 +87,13 @@
                     {"id": 16, "text": "qwqwtqwy", img: "https://picsum.photos/1920/1080?random", imgBool: true, title: "dasd", viewComment: false, comments: [{"id":1, comment: "asdasdads", user: {"id": 100, handle: "negatron" }}]},
                     {"id": 17, "text": "qwqwtqwy", img: "https://picsum.photos/1920/1080?random", imgBool: true, title: "dasd", viewComment: false, comments: [{"id":1, comment: "asdasdads", user: {"id": 100, handle: "negatron" }}]},
                     {"id": 18, "text": "qwqwtqwy", img: "https://picsum.photos/1920/1080?random", imgBool: true, title: "dasd", viewComment: false, comments: [{"id":1, comment: "asdasdads", user: {"id": 100, handle: "negatron" }}]},
-                    {"id": 19, "text": "qwqwtqwy", img: "https://picsum.photos/1920/1080?random", imgBool: true, title: "dasd", viewComment: false, comments: [{"id":1, comment: "asdasdads", user: {"id": 100, handle: "negatron" }}]},
+                    {"id": 19, "text": "qwqwtqwy", img: "https://picsum.photos/1920/1080?random", imgBool: true, title: "dasd", viewComment: false, comments: [{"id":1, comment: "asdasdads", user: {"id": 100, handle: "negatron" }},{"id":1, comment: "asdasdads", user: {"id": 100, handle: "negatron" }},{"id":1, comment: "asdasdads", user: {"id": 100, handle: "negatron" }},{"id":1, comment: "asdasdads", user: {"id": 100, handle: "negatron" }},{"id":1, comment: "asdasdads", user: {"id": 100, handle: "negatron" }},{"id":1, comment: "asdasdads", user: {"id": 100, handle: "negatron" }},{"id":1, comment: "asdasdads", user: {"id": 100, handle: "negatron" }},{"id":1, comment: "asdasdads", user: {"id": 100, handle: "negatron" }},{"id":1, comment: "asdasdads", user: {"id": 100, handle: "negatron" }},{"id":1, comment: "asdasdads", user: {"id": 100, handle: "negatron" }}]},
                 ] 
             }
         },
         methods: {
             viewComment(idx:number) {
                 this.posts[idx].viewComment = !this.posts[idx].viewComment
-
-                console.log(this.posts[idx])
             }
         }
     }
