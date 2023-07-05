@@ -8,7 +8,7 @@
     <v-menu>
       <template v-slot:activator="{ props }">
         <v-avatar color="surface-variant" class="mr-3"></v-avatar>
-        <v-list-item v-bind="props" v-if="isLoggedIn" class="text-white mr-5" :title="nameHandle"></v-list-item>
+        <v-list-item v-bind="props" v-if="isLoggedIn" class="text-white mr-5" :title="userData.handle"></v-list-item>
         <v-list-item v-bind="props" v-if="!isLoggedIn" class="text-white mr-5" title="Guest"></v-list-item>
       </template>
       <v-list>
@@ -27,9 +27,17 @@
   </v-app-bar>
 </template>
 
-<script lang="ts" setup>
-  //
-  let isLoggedIn:boolean = true;
+<script lang="ts">
+import { getCurrentInstance } from 'vue';
 
-  let nameHandle:string = "negatron";
+  //
+  export default {
+    data() {
+      const internalInstance = getCurrentInstance();
+      return {
+        userData: internalInstance?.appContext.config.globalProperties.$user.userData,
+        isLoggedIn: internalInstance?.appContext.config.globalProperties.$user.isLoggedIn
+      }
+    }
+  }
 </script>
